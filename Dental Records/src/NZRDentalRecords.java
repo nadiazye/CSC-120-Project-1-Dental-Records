@@ -9,5 +9,39 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
     // CONSTANTS --------------------------------------------------------------------------------------------------------
     public static void main(String[] args) { // beginning of main method ================================================
 
+        //Variables
+        int totalFamilyNumber;
+        String [] nameRecord; //to hold name data
+        char[][][] teethInformation; //3d array for family teeth
+        int [][] numberOfTeeth;
+
+
+
+        //Displaying the beginning of the records:
+        System.out.println("Welcome to the Floridian Tooth Records ");
+        System.out.println("----------------------------------------------------");
+
+        //getting the number of people in the family
+
     } // end of main method =============================================================================================
+
+    public static int getFamilyNumber() { // beginning of getFamilyNumber ===============================================
+
+        int totalFamilyNumber;
+
+        //asking the user for their number of family members
+        System.out.println("Please enter the number of people in this family:    ");
+        totalFamilyNumber = keyboard.nextInt();
+
+        //foolproof the family number (cannot be a negative number and cannot be more than 6)
+        if (totalFamilyNumber < 0 || totalFamilyNumber > 6) { //beginning of if statement
+            System.out.println("Invalid number of people, please try again:   ");
+
+            totalFamilyNumber = keyboard.nextInt();
+        } // end of if statement
+
+        return totalFamilyNumber;
+
+        }// end of getFamilyNumber ======================================================================================
+
 } // end of Dental Records class (includes my initials) =================================================================
