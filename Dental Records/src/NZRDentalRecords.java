@@ -1,5 +1,10 @@
 import java.util.Scanner; // import line needed in order to get user input
 
+/**
+ * Withold user information about their dental work
+ *@author Nadia Rodriguez
+ *CSC 120
+ */
 public class NZRDentalRecords { // beginning of Dental Records class (includes my initials) ================================================================================================================
     //putting in Scanner keyboard --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private static final Scanner keyboard = new Scanner(System.in);
@@ -8,6 +13,10 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
     private static final int MAX_TEETH = 10;
     private static final int MAX_TEETH_LOC = 2;
 
+    /**
+     * the main method, has some of the menu output and holds some of the beginning variables, arrays, etc
+     * @param args
+     */
     // CONSTANTS -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     public static void main(String[] args) { // beginning of main method ===================================================================================================================================
 
@@ -57,6 +66,10 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
         } while (menuChoice != 'X');
     } // end of main method ===============================================================================================================================================================================
 
+    /**
+     * this method is to receive the number of people within the family, excluding ridiculous numbers
+     * @return
+     */
     public static int getFamilyNumber() { // beginning of getFamilyNumber =================================================================================================================================
 
         int totalFamilyNumber;
@@ -76,6 +89,13 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
 
         }// end of getFamilyNumber =======================================================================================================================================================================
 
+    /**
+     * this receives the family member's name, the amount of teeth, and what type of teeth
+     * @param totalFamilyNumber
+     * @param familyNames
+     * @param teethInformation
+     * @param numberOfTeeth
+     */
     public static void getFamilyData (int totalFamilyNumber, String[] familyNames, char [][][] teethInformation, int [][] numberOfTeeth) { // beginning of getFamilyData =================================
         int familyInteger; // meant to show the number of family member, but familyNumber is used too much and I don't want to be confused
         String upperTeeth;
@@ -107,6 +127,13 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
         } // end of for loop 1
     } // end of getFamilyData ============================================================================================================================================================================
 
+    /**
+     * this recieves the teeth types for the upper set of teeth and then the lower set
+     * @param familyIndex
+     * @param familyNames
+     * @param teethLocation
+     * @return
+     */
     public static String getUppersAndLowers(int familyIndex, String familyNames, String teethLocation) { //beginning of get UppersAndLowers method =======================================================
         String teethUpOrLow;
         int teethLength = 0;
@@ -141,6 +168,13 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
 
     } // end of getUppersAndLowers method ================================================================================================================================================================
 
+    /**
+     * this prints and formats the arrays to show when user prompts for it
+     * @param totalFamilyNumber
+     * @param familyNames
+     * @param teethInformation
+     * @param numberOfTeeth
+     */
     public static void printFullRecords(int totalFamilyNumber, String[] familyNames, char [][][] teethInformation, int[][] numberOfTeeth) { //beginning of printFullRecords ==============================
 
             for (int familyIndex = 0; familyIndex < totalFamilyNumber; familyIndex++) { //beginning of for
@@ -161,6 +195,13 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
 
         } //end of printFullRecords ======================================================================================================================================================================
 
+    /**
+     * this is the function used when a user wants to extract a tooth
+     * @param totalFamilyNumber
+     * @param familyNames
+     * @param teethInformation
+     * @param numberOfTeeth
+     */
         public static void extractTooth(int totalFamilyNumber, String [] familyNames, char [][][] teethInformation,int [][] numberOfTeeth) { // beginning of extractTooth ==============================
             String familyMember;
             boolean foundTooth = false;
@@ -230,6 +271,12 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
             teethInformation[saveMemberID][toothRow][toothNum-1] = 'M';
         } //end of extractTooth ==========================================================================================================================================================================
 
+    /**
+     * this calculates the location of the teeth, using the provided formula:  Ix^2 + Bx - M
+     * @param totalFamilyNumber
+     * @param teethInformation
+     * @param numberOfTeeth
+     */
             public static void calculateRoot(int totalFamilyNumber, char[][][] teethInformation, int[][] numberOfTeeth) { //beginning of calculateRoot =====================================================
                 double sumI = 0.0;  // Count of I teeth
                 double sumB = 0.0;  // Count of B teeth
@@ -251,7 +298,6 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
                                     sumM += 1;
                                     break;
                                 default:
-                                    // Ignore any other letters (like C)
                                     break;
                             }
                         }
