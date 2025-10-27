@@ -53,6 +53,7 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
 
         for (int familyIndex = 0; familyIndex < totalFamilyNumber; familyIndex++) { //beginning of for loop 1
             familyInteger = familyIndex + 1;
+            keyboard.nextLine();
             System.out.println("Please enter the name for family member " + familyIndex + "    : ");
             familyNames[familyIndex] = keyboard.nextLine();
 
@@ -99,11 +100,12 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
         //loop to check input length
         while (!thisIsFine || teethLength > 10) {
 
-            if (teethLength > 10){ //beginning of if else
+            if (teethLength > 10) { //beginning of if else
                 System.out.println("Too many teeth, try again           : ");
             } else if (!thisIsFine) {
                 System.out.println("Invalid teeth types, try again      : ");
-        } // end of if else
+            } // end of if else
+        } // end of while loop
 
             // asking user again for input
          teethUpOrLow = keyboard.next();
@@ -119,7 +121,151 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
              }// end if
          } // end for
          teethUpOrLow = teethUpOrLow.toUpperCase();
+
          return teethUpOrLow;
 
     } // end of getUppersAndLowers method ================================================================================================================================================================
+
+    public static void printFullRecords(int totalFamilyNumber, String[] familyNames, char [][][] teethInformation, int[][] numberOfTeeth) { //beginning of printFullRecords ==============================
+
+            for (int familyIndex = 0; familyIndex < totalFamilyNumber; familyIndex++) { //beginning of for
+                System.out.println(familyNames[familyIndex]);
+                System.out.println("   Uppers:   ");
+                for (int toothIndex = 0; toothIndex < numberOfTeeth[0][familyIndex]; toothIndex++) { //beginning of inner for 1
+                    System.out.printf("%3d:%S", toothIndex + 1, teethInformation[familyIndex][0][toothIndex]);
+                } //end of inner for 1
+                System.out.println();
+                System.out.println("   Lowers:   ");
+                for (int toothIndex = 0; toothIndex < numberOfTeeth[1][familyIndex]; toothIndex++) { // beginning of inner for 2
+                    System.out.printf("%3d:%S" , toothIndex + 1, teethInformation[familyIndex][1][toothIndex]);
+                } // end of inner for 2
+
+                System.out.println();
+
+            } //end of for
+
+        } //end of printFullRecords ======================================================================================================================================================================
+
+        public static void extractTooth(int totalFamilyNumber, String [] familyNames, char [][][] teethInformation,int [][] numberOfTeeth) { // beginning of extractTooth ==============================
+            String familyMember;
+            boolean foundTooth = false;
+            boolean correctUorL = false;
+            char toothLayer;
+            int saveMemberID = 0;
+            int toothNum;
+            int toothRow = 0;
+
+            System.out.println("Which family member      : ");
+            familyMember = keyboard.next();
+
+            do { //beginning of do while
+                for (int familyIndex = 0; familyIndex < totalFamilyNumber; familyIndex++) { // beginning of for
+                if (familyMember.equalsIgnoreCase(familyNames[familyIndex])) { //beginning of if
+                    foundTooth = true;
+                    saveMemberID = familyIndex;
+                } // end of if
+            } //end of for
+                if(!foundTooth){ //beginning of for
+                    System.out.println("Invalid family member, try again      : ");
+                    familyMember = keyboard.next();
+                } //end of for
+
+            } while (!foundTooth);
+            System.out.println("Which tooth layer (U)pper or (L)ower      :");//end of do while
+            toothLayer = keyboard.next().charAt(0);
+
+            //checking if the tooth layer is upper or lower
+            do { //beginning of do
+                switch (toothLayer) { //beginning of switch case
+                    case 'U':
+                    case 'u':
+                        correctUorL = true;
+                        toothRow = 0;
+                        break;
+                    case 'L':
+                    case 'l':
+                        correctUorL = true;
+                        toothRow = 1;
+                    break;
+                    default:
+                        System.out.println("Invalid tooth layer, try again      : ");
+                        toothLayer = keyboard.next().charAt(0);
+                } // end of switch case
+            } while (!correctUorL); // end of do
+
+            System.out.println("Which tooth number       : ");
+            toothNum = keyboard.nextInt();
+
+
+            while (toothNum > numberOfTeeth[toothRow][saveMemberID] || toothNum <=0 || teethInformation [saveMemberID][toothRow][toothNum-1] == 'M') { // beginning of while
+
+                if (toothNum > numberOfTeeth[toothRow][saveMemberID]) { // beginning of if else
+                    System.out.println("Invalid tooth number, try again      : ");
+                } else if (teethInformation[saveMemberID][toothRow][toothNum-1] == 'M') {
+                    System.out.println("Missing tooth, try again      : ");
+                }
+                toothNum = keyboard.nextInt();
+              } // end of while
+
+            teethInformation[saveMemberID][toothRow][toothNum-1] = 'M';
+        } //end of extractTooth ==========================================================================================================================================================================
+
+            public static void calculateRoot(int totalFamilyNumber, char[][][] teethInformation, int[][] numberOfTeeth) { //beginning of calculateRoot =====================================================
+                double a, b, c;
+                double root1, root2;
+                double discriminant;
+                double sumC = 0.0;
+                double sumB = 0.0;
+                double sumM = 0.0;
+
+                // Loop to count all C, B, and M teeth
+                for (int famIndex = 0; famIndex < totalFamilyNumber; famIndex++) {
+                    for (int rowIndex = 0; rowIndex < MAX_TEETH_LOC; rowIndex++) {
+                        for (int toothIndex = 0; toothIndex < numberOfTeeth[rowIndex][famIndex]; toothIndex++) {
+                            char tooth = teethInformation[famIndex][rowIndex][toothIndex];
+                            switch (tooth) {
+                                case 'C':
+                                    sumC++;
+                                    break;
+                                case 'B':
+                                    sumB++;
+                                    break;
+                                case 'M':
+                                    sumM++;
+                                    break;
+                                default:
+                                    // Shouldn’t happen if input validation worked
+                                    System.out.println("Warning: Invalid tooth type detected.");
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+                // Assign coefficients for quadratic equation
+                a = sumB;
+                b = sumC;
+                c = -1 * sumM;
+
+                // Compute discriminant (b² - 4ac)
+                discriminant = b * b - 4.0 * a * c;
+
+                if (a == 0) { //beginning of if
+                    System.out.println("Cannot compute roots: coefficient 'a' (sum of B teeth) is zero.");
+                    return;
+                } // end of if
+
+                // Solve quadratic
+                if (discriminant == 0.0) { // beginning of else if
+                    root1 = -b / (2.0 * a);
+                    System.out.printf("One root canal at %6.2f\n\n", root1);
+                } else if (discriminant > 0.0) {
+                    root1 = (-b + Math.sqrt(discriminant)) / (2.0 * a);
+                    root2 = (-b - Math.sqrt(discriminant)) / (2.0 * a);
+                    System.out.printf("One root canal at %6.2f\nAnother root canal at %6.2f\n\n", root1, root2);
+                } else {
+                    System.out.println("No real roots.\n");
+                } // end of else
+            } //end of calculate Root ========================================================================================================================================================================
+
 } // end of Dental Records class (includes my initials) ==================================================================================================================================================
