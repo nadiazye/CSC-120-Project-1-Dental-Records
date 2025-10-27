@@ -212,12 +212,13 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
             toothNum = keyboard.nextInt();
 
 
-            while (toothNum > numberOfTeeth[toothRow][saveMemberID] || toothNum <=0 || teethInformation [saveMemberID][toothRow][toothNum-1] == 'M') { // beginning of while
+            while (toothNum <= 0 || toothNum > numberOfTeeth[toothRow][saveMemberID]
+                    || teethInformation[saveMemberID][toothRow][toothNum - 1] == 'M') {
 
-                if (toothNum > numberOfTeeth[toothRow][saveMemberID]) { // beginning of if else
+                if (toothNum <= 0 || toothNum > numberOfTeeth[toothRow][saveMemberID]) {
                     System.out.println("Invalid tooth number, try again      : ");
-                } else if (teethInformation[saveMemberID][toothRow][toothNum-1] == 'M') {
-                    System.out.println("Missing tooth, try again      : ");
+                } else if (teethInformation[saveMemberID][toothRow][toothNum - 1] == 'M') {
+                    System.out.println("Missing tooth, try again             : ");
                 }
                 toothNum = keyboard.nextInt();
               } // end of while
@@ -226,54 +227,52 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
         } //end of extractTooth ==========================================================================================================================================================================
 
             public static void calculateRoot(int totalFamilyNumber, char[][][] teethInformation, int[][] numberOfTeeth) { //beginning of calculateRoot =====================================================
-                double sumC = 0.0;
-                double sumB = 0.0;
-                double sumM = 0.0;
+                double sumI = 0.0;  // Count of I teeth
+                double sumB = 0.0;  // Count of B teeth
+                double sumM = 0.0;  // Count of M teeth
 
-                // Loop through each family member
+                // Loop through all families, all teeth locations, all teeth
                 for (int famIndex = 0; famIndex < totalFamilyNumber; famIndex++) {
-                    for (int rowIndex = 0; rowIndex < MAX_TEETH_LOC; rowIndex++) {
-                        // Only iterate over actual number of teeth for this layer
-                        for (int toothIndex = 0; toothIndex < numberOfTeeth[rowIndex][famIndex]; toothIndex++) {
-                            char tooth = teethInformation[famIndex][rowIndex][toothIndex];
+                    for (int row = 0; row < MAX_TEETH_LOC; row++) {
+                        for (int toothIndex = 0; toothIndex < numberOfTeeth[row][famIndex]; toothIndex++) {
+                            char tooth = Character.toUpperCase(teethInformation[famIndex][row][toothIndex]);
                             switch (tooth) {
-                                case 'C':
-                                    sumC++;
+                                case 'I':
+                                    sumI += 1;
                                     break;
                                 case 'B':
-                                    sumB++;
+                                    sumB += 1;
                                     break;
                                 case 'M':
-                                    sumM++;
-                                    break;
-                                case 'I':
-                                    // Ignore permanent missing teeth or placeholders
+                                    sumM += 1;
                                     break;
                                 default:
-                                    // Ignore empty/uninitialized array slots
+                                    // Ignore any other letters (like C)
                                     break;
                             }
                         }
                     }
                 }
 
-                // Solve Bx^2 + Cx - M = 0
-                double a = sumB;
-                double b = sumC;
+                // Assign coefficients according to formula: I x^2 + B x - M = 0
+                double a = sumI;
+                double b = sumB;
                 double c = -sumM;
 
+                // Calculate discriminant
                 double discriminant = b * b - 4.0 * a * c;
 
-                if (discriminant == 0.0) {
+                // Compute roots
+                if (discriminant < 0) {
+                    System.out.println("No real roots");
+                } else if (discriminant == 0.0) {
                     double root = -b / (2.0 * a);
-                    System.out.printf("One root canal at %6.2f\n\n", root);
-                } else if (discriminant > 0.0) {
+                    System.out.printf("One root canal at %6.2f\n", root);
+                } else {
                     double root1 = (-b + Math.sqrt(discriminant)) / (2.0 * a);
                     double root2 = (-b - Math.sqrt(discriminant)) / (2.0 * a);
-                    System.out.printf("One root canal at %6.2f\nAnother root canal at %6.2f\n\n", root1, root2);
-                } else {
-                    System.out.println("No real roots\n");
-                } // end of else
+                    System.out.printf("One root canal at %6.2f\nAnother root canal at %6.2f\n", root1, root2);
+                }
 
             } //end of calculate Root ========================================================================================================================================================================
 
