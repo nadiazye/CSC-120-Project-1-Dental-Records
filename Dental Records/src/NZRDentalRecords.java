@@ -173,11 +173,12 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
             System.out.println("Which family member      : ");
             familyMember = keyboard.next();
 
-            do { //beginning of do while
+           while (!foundTooth) { //beginning of while
                 for (int familyIndex = 0; familyIndex < totalFamilyNumber; familyIndex++) { // beginning of for
                 if (familyMember.equalsIgnoreCase(familyNames[familyIndex])) { //beginning of if
                     foundTooth = true;
                     saveMemberID = familyIndex;
+                    break;
                 } // end of if
             } //end of for
                 if(!foundTooth){ //beginning of for
@@ -185,7 +186,8 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
                     familyMember = keyboard.next();
                 } //end of for
 
-            } while (!foundTooth);
+            } // end of while
+
             System.out.println("Which tooth layer (U)pper or (L)ower      :");//end of do while
             toothLayer = keyboard.next().charAt(0);
 
@@ -212,16 +214,18 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
             toothNum = keyboard.nextInt();
 
 
-            while (toothNum <= 0 || toothNum > numberOfTeeth[toothRow][saveMemberID]
-                    || teethInformation[saveMemberID][toothRow][toothNum - 1] == 'M') {
-
+            while (true) {
                 if (toothNum <= 0 || toothNum > numberOfTeeth[toothRow][saveMemberID]) {
-                    System.out.println("Invalid tooth number, try again      : ");
+                    System.out.print("Invalid tooth number, try again      : ");
                 } else if (teethInformation[saveMemberID][toothRow][toothNum - 1] == 'M') {
-                    System.out.println("Missing tooth, try again             : ");
+                    System.out.print("Missing tooth, try again             : ");
+                } else {
+                    // valid input
+                    break;
                 }
                 toothNum = keyboard.nextInt();
-              } // end of while
+            }
+// end of while
 
             teethInformation[saveMemberID][toothRow][toothNum-1] = 'M';
         } //end of extractTooth ==========================================================================================================================================================================
