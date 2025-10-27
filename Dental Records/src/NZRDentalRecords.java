@@ -21,6 +21,8 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
         System.out.println("Welcome to the Floridian Tooth Records ");
         System.out.println("----------------------------------------------------");
 
+        //check if totalFam is working
+        totalFamilyNumber = getFamilyNumber();
         //getting the number of people in the family
 
     } // end of main method =============================================================================================
@@ -34,11 +36,11 @@ public class NZRDentalRecords { // beginning of Dental Records class (includes m
         totalFamilyNumber = keyboard.nextInt();
 
         //foolproof the family number (cannot be a negative number and cannot be more than 6)
-        if (totalFamilyNumber < 0 || totalFamilyNumber > 6) { //beginning of if statement
+        while (totalFamilyNumber < 0 || totalFamilyNumber > 6) { //beginning of while loop
             System.out.println("Invalid number of people, please try again:   ");
 
             totalFamilyNumber = keyboard.nextInt();
-        } // end of if statement
+        } // end of while loop
 
         return totalFamilyNumber;
 
